@@ -35,6 +35,7 @@ namespace DCSExtractGui
             store.Text = "";
             remain.Text = "";
             rounds.Text = "";
+            lblMessage.Text = "";
             m_Tracked = false;
         }
 
@@ -149,6 +150,13 @@ namespace DCSExtractGui
 
             ok = DCSExtract.ScanPui800(ref left, ref middle, ref right);
 
+            string mem = "";
+            string que = "";
+            string fail = "";
+            string msg = "";
+
+            ok = DCSExtract.ScanEkran(ref mem, ref que, ref fail, ref msg);
+
             if (!ok)
             {
                 lock (m_Lock)
@@ -171,6 +179,11 @@ namespace DCSExtractGui
             store.Text = (left != "") ? left : "";
             remain.Text = (middle != -1) ? middle.ToString() : "";
             rounds.Text = (right != -1) ? right.ToString() : "";
+
+            lblQueue.ForeColor = (que != "") ? Color.Red : Color.LightGray;
+            lblMemory.ForeColor = (mem != "") ? Color.Red : Color.LightGray;
+            lblFailure.ForeColor = (fail != "") ? Color.Red : Color.LightGray;
+            lblMessage.Text = (msg != "") ? msg : "";
         }
     }
 }

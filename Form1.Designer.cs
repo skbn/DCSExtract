@@ -46,6 +46,11 @@
             this.pvi_upright = new System.Windows.Forms.Label();
             this.pvi_downright = new System.Windows.Forms.Label();
             this.main = new System.Windows.Forms.Timer(this.components);
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblQueue = new System.Windows.Forms.Label();
+            this.lblMemory = new System.Windows.Forms.Label();
+            this.lblFailure = new System.Windows.Forms.Label();
+            this.lblMessage = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -211,11 +216,69 @@
             // 
             this.main.Tick += new System.EventHandler(this.OnTick);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(75, 206);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(64, 20);
+            this.label2.TabIndex = 23;
+            this.label2.Text = "EKRAN";
+            // 
+            // lblQueue
+            // 
+            this.lblQueue.AutoSize = true;
+            this.lblQueue.Font = new System.Drawing.Font("LcdD", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblQueue.ForeColor = System.Drawing.Color.LightGray;
+            this.lblQueue.Location = new System.Drawing.Point(16, 240);
+            this.lblQueue.Name = "lblQueue";
+            this.lblQueue.Size = new System.Drawing.Size(51, 16);
+            this.lblQueue.TabIndex = 24;
+            this.lblQueue.Text = "QUEUE";
+            // 
+            // lblMemory
+            // 
+            this.lblMemory.AutoSize = true;
+            this.lblMemory.Font = new System.Drawing.Font("LcdD", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMemory.ForeColor = System.Drawing.Color.LightGray;
+            this.lblMemory.Location = new System.Drawing.Point(78, 240);
+            this.lblMemory.Name = "lblMemory";
+            this.lblMemory.Size = new System.Drawing.Size(61, 16);
+            this.lblMemory.TabIndex = 25;
+            this.lblMemory.Text = "MEMORY";
+            // 
+            // lblFailure
+            // 
+            this.lblFailure.AutoSize = true;
+            this.lblFailure.Font = new System.Drawing.Font("LcdD", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFailure.ForeColor = System.Drawing.Color.LightGray;
+            this.lblFailure.Location = new System.Drawing.Point(145, 240);
+            this.lblFailure.Name = "lblFailure";
+            this.lblFailure.Size = new System.Drawing.Size(62, 16);
+            this.lblFailure.TabIndex = 26;
+            this.lblFailure.Text = "FAILURE";
+            // 
+            // lblMessage
+            // 
+            this.lblMessage.AutoSize = true;
+            this.lblMessage.Font = new System.Drawing.Font("LcdD", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMessage.Location = new System.Drawing.Point(76, 275);
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(56, 16);
+            this.lblMessage.TabIndex = 27;
+            this.lblMessage.Text = "label4";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(229, 178);
+            this.ClientSize = new System.Drawing.Size(229, 357);
+            this.Controls.Add(this.lblMessage);
+            this.Controls.Add(this.lblFailure);
+            this.Controls.Add(this.lblMemory);
+            this.Controls.Add(this.lblQueue);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.pvi_downright);
             this.Controls.Add(this.pvi_upright);
             this.Controls.Add(this.pvi_down);
@@ -262,6 +325,11 @@
         private System.Windows.Forms.Label pvi_upright;
         private System.Windows.Forms.Label pvi_downright;
         private System.Windows.Forms.Timer main;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblQueue;
+        private System.Windows.Forms.Label lblMemory;
+        private System.Windows.Forms.Label lblFailure;
+        private System.Windows.Forms.Label lblMessage;
     }
 }
 

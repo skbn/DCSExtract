@@ -8,35 +8,23 @@ namespace DCS
 {
     class DCSExtract
     {
-        [DllImport("DcsExport.dll")]
+        [DllImport("DcsExport64.dll")]
         public static extern bool version(ref int mayor, ref int minor);
 
-        [DllImport("DcsExport.dll")]
+        [DllImport("DcsExport64.dll")]
         public static extern bool exist_dcs();
 
-        [DllImport("DcsExport.dll")]
+        [DllImport("DcsExport64.dll")]
         public static extern bool start_capture();
 
-        [DllImport("DcsExport.dll")]
+        [DllImport("DcsExport64.dll")]
         public static extern void stop_capture();
 
-        [DllImport("DcsExport.dll")]
+        [DllImport("DcsExport64.dll")]
         public static extern bool exist_ka50();
 
-        [DllImport("DcsExport.dll")]
+        [DllImport("DcsExport64.dll")]
         public static extern bool exist_a10c();
-
-        [DllImport("DcsExport.dll")]
-        private static extern bool scan_uv26([Out] byte[] data, ref int length);
-
-        [DllImport("DcsExport.dll")]
-        private static extern bool scan_pvi(ref int upleft, [Out] byte[] up, ref int up_length, ref int upright, ref int downleft, [Out] byte[] down, ref int down_length, ref int downright);
-
-        [DllImport("DcsExport.dll")]
-        private static extern bool scan_pui800([Out] byte[] left, ref int left_length, ref int middle, ref int right);
-
-        [DllImport("DcsExport.dll")]
-        private static extern void info([Out] byte[] info, ref int length);
 
         public static void Info(ref string inf)
         {
@@ -86,5 +74,44 @@ namespace DCS
 
             return ret;
         }
+
+        public static bool ScanEkran(ref string memory, ref string queue, ref string failure, ref string message)
+        {
+            byte[] mem = new byte[256];
+            int memlen = 0;
+
+            byte[] que = new byte[256];
+            int quelen = 0;
+
+            byte[] fail = new byte[256];
+            int faillen = 0;
+
+            byte[] msg = new byte[256];
+            int msglen = 0;
+
+            bool ret = scan_ekran(mem, ref memlen, que, ref quelen, fail, ref faillen, msg, ref msglen);
+
+            memory = Encoding.ASCII.GetString(mem, 0, memlen);
+            queue = Encoding.ASCII.GetString(que, 0, quelen);
+            failure = Encoding.ASCII.GetString(fail, 0, faillen);
+            message = Encoding.ASCII.GetString(msg, 0, msglen);
+
+            return ret;
+        }
+
+        [DllImport("DcsExport64.dll")]
+        private static extern bool scan_uv26([Out] byte[] data, ref int length);
+
+        [DllImport("DcsExport64.dll")]
+        private static extern bool scan_pvi(ref int upleft, [Out] byte[] up, ref int up_length, ref int upright, ref int downleft, [Out] byte[] down, ref int down_length, ref int downright);
+
+        [DllImport("DcsExport64.dll")]
+        private static extern bool scan_pui800([Out] byte[] left, ref int left_length, ref int middle, ref int right);
+
+        [DllImport("DcsExport64.dll")]
+        private static extern bool scan_ekran([Out] byte[] memory, ref int memorylength, [Out] byte[] queue, ref int queuelength, [Out] byte[] failure, ref int failurelength, [Out] byte[] message, ref int messagelength);
+
+        [DllImport("DcsExport64.dll")]
+        private static extern void info([Out] byte[] info, ref int length);
     }
 }
