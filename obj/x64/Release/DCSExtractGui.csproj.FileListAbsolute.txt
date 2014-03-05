@@ -5,3 +5,4 @@ C:\Users\lmd\Documents\Visual Studio 2013\Projects\DCSExtractGui\DCSExtractGui\o
 C:\Users\lmd\Documents\Visual Studio 2013\Projects\DCSExtractGui\DCSExtractGui\obj\x64\Release\DCSExtractGui.csproj.GenerateResource.Cache
 C:\Users\lmd\Documents\Visual Studio 2013\Projects\DCSExtractGui\DCSExtractGui\obj\x64\Release\DCSExtractGui.exe
 C:\Users\lmd\Documents\Visual Studio 2013\Projects\DCSExtractGui\DCSExtractGui\obj\x64\Release\DCSExtractGui.pdb
+C:\Users\lmd\Documents\Visual Studio 2013\Projects\DCSExtractGui\DCSExtractGui\obj\x64\Release\DCSExtractGui.csprojResolveAssemblyReference.cache
