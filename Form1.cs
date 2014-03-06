@@ -18,6 +18,8 @@ namespace DCSExtractGui
             InitializeComponent();
         }
 
+        private string m_Text = "DCSExtract";
+        private bool m_Tracking = false;
         private bool m_Ka50 = false;
         private bool m_A10c = false;
         private Thread m_Search = null;
@@ -46,6 +48,7 @@ namespace DCSExtractGui
                 {
                     m_Ka50 = false;
                     m_A10c = false;
+                    m_Tracking = false;
                 }
 
                 while (!DCSExtract.exist_dcs())
@@ -60,6 +63,7 @@ namespace DCSExtractGui
                     lock (m_Lock)
                     {
                         m_Ka50 = true;
+                        m_Tracking = true;
                     }
 
                     if (!DCSExtract.scan_ka50(true, true, true))
@@ -67,6 +71,7 @@ namespace DCSExtractGui
                         lock(m_Lock)
                         {
                             m_Ka50 = false;
+                            m_Tracking = false;
                         }
 
                         continue;
@@ -78,6 +83,7 @@ namespace DCSExtractGui
                     lock (m_Lock)
                     {
                         m_A10c = true;
+                        m_Tracking = true;
                     }
 
                     if (!DCSExtract.scan_a10c(true, true, true, true))
@@ -85,10 +91,16 @@ namespace DCSExtractGui
                         lock (m_Lock)
                         {
                             m_A10c = false;
+                            m_Tracking = false;
                         }
 
                         continue;
                     }
+                }
+
+                lock(m_Lock)
+                {
+                    m_Tracking = false;
                 }
 
                 while(DCSExtract.exist_dcs())
@@ -102,23 +114,33 @@ namespace DCSExtractGui
         {
             if(!DCSExtract.exist_dcs())
             {
-                this.Text = "Ka50 or A10c not detected";
+                this.Text = m_Text + ": Game not detected";
                 return;
             }
 
             bool ka50 = false;
             bool a10c = false;
+            bool track = false;
 
             lock(m_Lock)
             {
                 ka50 = m_Ka50;
                 a10c = m_A10c;
+                track = m_Tracking;
             }
 
             if (ka50)
             {
-                this.Text = "Ka50 detected";
-                ExtractKa50();
+                if (!m_Tracking)
+                {
+                    this.Text = m_Text + ": Ka50 detected";
+                    ExtractKa50();
+                }
+                else
+                {
+                    this.Text = m_Text + ": Ka50 searching data";
+                    ClearKa50();
+                }
             }
             else
             {
@@ -127,8 +149,16 @@ namespace DCSExtractGui
 
             if (a10c)
             {
-                this.Text = "A10c detected";
-                ExtractA10c();
+                if (!m_Tracking)
+                {
+                    this.Text = m_Text + ": A10c detected";
+                    ExtractA10c();
+                }
+                else
+                {
+                    this.Text = m_Text + ": A10c searching data";
+                    ClearA10c();
+                }
             }
             else
             {

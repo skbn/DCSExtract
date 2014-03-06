@@ -48,11 +48,11 @@ namespace DCS
             byte[] uv = new byte[16];
             int len = 0;
 
-            bool ret = get_uv26(uv, ref len);
+            if(!get_uv26(uv, ref len)) return false;
 
             data = Encoding.ASCII.GetString(uv, 0, len);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanPVI(ref int upleft, ref string up, ref int upright, ref int downleft, ref string down, ref int downright)
@@ -62,12 +62,12 @@ namespace DCS
             byte[] sdown = new byte[16];
             int dlen = 0;
 
-            bool ret = get_pvi(ref upleft, sup, ref ulen, ref upright, ref downleft, sdown, ref dlen, ref downright);
+            if(!get_pvi(ref upleft, sup, ref ulen, ref upright, ref downleft, sdown, ref dlen, ref downright)) return false;
 
             up = Encoding.ASCII.GetString(sup, 0, ulen);
             down = Encoding.ASCII.GetString(sdown, 0, dlen);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanPui800(ref string left, ref int middle, ref int right)
@@ -75,11 +75,11 @@ namespace DCS
             byte[] sleft = new byte[16];
             int len = 0;
 
-            bool ret = get_pui800(sleft, ref len, ref middle, ref right);
+            if(!get_pui800(sleft, ref len, ref middle, ref right)) return false;
 
             left = Encoding.UTF8.GetString(sleft, 0, len);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanEkran(ref string memory, ref string queue, ref string failure,ref string line1, ref string line2, ref string line3, ref string line4)
@@ -105,7 +105,7 @@ namespace DCS
             byte[] ln4 = new byte[256];
             int ln4len = 0;
 
-            bool ret = get_ekran(mem, ref memlen, que, ref quelen, fail, ref faillen, ln1, ref ln1len, ln2, ref ln2len, ln3, ref ln3len, ln4, ref ln4len);
+            if(!get_ekran(mem, ref memlen, que, ref quelen, fail, ref faillen, ln1, ref ln1len, ln2, ref ln2len, ln3, ref ln3len, ln4, ref ln4len)) return false;
 
             memory = Encoding.ASCII.GetString(mem, 0, memlen);
             queue = Encoding.ASCII.GetString(que, 0, quelen);
@@ -115,7 +115,7 @@ namespace DCS
             line3 = Encoding.ASCII.GetString(ln3, 0, ln3len);
             line4 = Encoding.ASCII.GetString(ln4, 0, ln4len);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanSpu9(ref bool on, ref int channel)
@@ -128,11 +128,11 @@ namespace DCS
             byte[] freq = new byte[256];
             int len = 0;
 
-            bool ret = get_r800(ref on, ref am, freq, ref len);
+            if(!get_r800(ref on, ref am, freq, ref len)) return false;
 
             frequency = Encoding.ASCII.GetString(freq, 0, len);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanR828(ref bool on, ref int channel)
@@ -152,14 +152,14 @@ namespace DCS
             byte[] mw = new byte[256];
             int mwlen = 0;
 
-            bool ret = get_cmsc(ch, ref chlen, fl, ref fllen, jm, ref jmlen, mw, ref mwlen, ref unwrapthreats, ref unwrapsymbols);
+            if(!get_cmsc(ch, ref chlen, fl, ref fllen, jm, ref jmlen, mw, ref mwlen, ref unwrapthreats, ref unwrapsymbols)) return false;
 
             chaff = Encoding.ASCII.GetString(ch, 0, chlen);
             flare = Encoding.ASCII.GetString(fl, 0, fllen);
             jmr = Encoding.ASCII.GetString(jm, 0, jmlen);
             mws = Encoding.ASCII.GetString(mw, 0, mwlen);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanCMSP(ref string up1, ref string up2, ref string up3, ref string up4, ref string down1, ref string down2, ref string down3, ref string down4)
@@ -181,7 +181,7 @@ namespace DCS
             byte[] d4 = new byte[256];
             int d4len = 0;
 
-            bool ret = get_cmsp(u1, ref u1len, u2, ref u2len, u3, ref u3len, u4, ref u4len, d1, ref d1len, d2, ref d2len, d3, ref d3len, d4, ref d4len);
+            if(!get_cmsp(u1, ref u1len, u2, ref u2len, u3, ref u3len, u4, ref u4len, d1, ref d1len, d2, ref d2len, d3, ref d3len, d4, ref d4len)) return false;
 
             up1 = Encoding.ASCII.GetString(u1, 0, u1len);
             up2 = Encoding.ASCII.GetString(u2, 0, u2len);
@@ -192,7 +192,7 @@ namespace DCS
             down3 = Encoding.ASCII.GetString(d3, 0, d3len);
             down4 = Encoding.ASCII.GetString(d4, 0, d4len);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanUHF(ref int channel, ref int functiondial, ref int modefrequency, ref string frequency)
@@ -200,11 +200,11 @@ namespace DCS
             byte[] freq = new byte[256];
             int freqlen = 0;
 
-            bool ret = get_uhf(ref channel, ref functiondial, ref modefrequency, freq, ref freqlen);
+            if(!get_uhf(ref channel, ref functiondial, ref modefrequency, freq, ref freqlen)) return false;
 
             frequency = Encoding.ASCII.GetString(freq, 0, freqlen);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanTacan(ref int modedial, ref string frequency)
@@ -212,11 +212,11 @@ namespace DCS
             byte[] freq = new byte[256];
             int freqlen = 0;
 
-            bool ret = get_tacan(ref modedial, freq, ref freqlen);
+            if(!get_tacan(ref modedial, freq, ref freqlen)) return false;
 
             frequency = Encoding.ASCII.GetString(freq, 0, freqlen);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanILS(ref bool on, ref string frequency)
@@ -224,11 +224,11 @@ namespace DCS
             byte[] freq = new byte[256];
             int freqlen = 0;
 
-            bool ret = get_ils(ref on, freq, ref freqlen);
+            if(!get_ils(ref on, freq, ref freqlen)) return false;
 
             frequency = Encoding.ASCII.GetString(freq, 0, freqlen);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanVHF_AM(ref bool on, ref int channel, ref int modefrequency, ref int selectfrequency, ref string frequency)
@@ -236,11 +236,11 @@ namespace DCS
             byte[] freq = new byte[256];
             int freqlen = 0;
 
-            bool ret = get_vhf_am(ref on, ref channel, ref modefrequency, ref selectfrequency, freq, ref freqlen);
+            if(!get_vhf_am(ref on, ref channel, ref modefrequency, ref selectfrequency, freq, ref freqlen)) return false;
 
             frequency = Encoding.ASCII.GetString(freq, 0, freqlen);
 
-            return ret;
+            return true;
         }
 
         public static bool ScanVHF_FM(ref bool on, ref int channel, ref int modefrequency, ref int selectfrequency, ref string frequency)
@@ -248,11 +248,11 @@ namespace DCS
             byte[] freq = new byte[256];
             int freqlen = 0;
 
-            bool ret = get_vhf_fm(ref on, ref channel, ref modefrequency, ref selectfrequency, freq, ref freqlen);
+            if(!get_vhf_fm(ref on, ref channel, ref modefrequency, ref selectfrequency, freq, ref freqlen)) return false;
 
             frequency = Encoding.ASCII.GetString(freq, 0, freqlen);
 
-            return ret;
+            return true;
         }
 
         [DllImport("DcsExport64.dll")]
