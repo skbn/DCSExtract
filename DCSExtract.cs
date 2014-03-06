@@ -50,7 +50,7 @@ namespace DCS
 
             if(!get_uv26(uv, ref len)) return false;
 
-            data = Encoding.ASCII.GetString(uv, 0, len);
+            data = Encoding.UTF8.GetString(uv, 0, len);
 
             return true;
         }
@@ -64,8 +64,8 @@ namespace DCS
 
             if(!get_pvi(ref upleft, sup, ref ulen, ref upright, ref downleft, sdown, ref dlen, ref downright)) return false;
 
-            up = Encoding.ASCII.GetString(sup, 0, ulen);
-            down = Encoding.ASCII.GetString(sdown, 0, dlen);
+            up = Encoding.UTF8.GetString(sup, 0, ulen);
+            down = Encoding.UTF8.GetString(sdown, 0, dlen);
 
             return true;
         }
@@ -107,13 +107,13 @@ namespace DCS
 
             if(!get_ekran(mem, ref memlen, que, ref quelen, fail, ref faillen, ln1, ref ln1len, ln2, ref ln2len, ln3, ref ln3len, ln4, ref ln4len)) return false;
 
-            memory = Encoding.ASCII.GetString(mem, 0, memlen);
-            queue = Encoding.ASCII.GetString(que, 0, quelen);
-            failure = Encoding.ASCII.GetString(fail, 0, faillen);
-            line1 = Encoding.ASCII.GetString(ln1, 0, ln1len);
-            line2 = Encoding.ASCII.GetString(ln2, 0, ln2len);
-            line3 = Encoding.ASCII.GetString(ln3, 0, ln3len);
-            line4 = Encoding.ASCII.GetString(ln4, 0, ln4len);
+            memory = Encoding.UTF8.GetString(mem, 0, memlen);
+            queue = Encoding.UTF8.GetString(que, 0, quelen);
+            failure = Encoding.UTF8.GetString(fail, 0, faillen);
+            line1 = Encoding.UTF8.GetString(ln1, 0, ln1len);
+            line2 = Encoding.UTF8.GetString(ln2, 0, ln2len);
+            line3 = Encoding.UTF8.GetString(ln3, 0, ln3len);
+            line4 = Encoding.UTF8.GetString(ln4, 0, ln4len);
 
             return true;
         }
@@ -130,7 +130,7 @@ namespace DCS
 
             if(!get_r800(ref on, ref am, freq, ref len)) return false;
 
-            frequency = Encoding.ASCII.GetString(freq, 0, len);
+            frequency = Encoding.UTF8.GetString(freq, 0, len);
 
             return true;
         }
@@ -154,10 +154,10 @@ namespace DCS
 
             if(!get_cmsc(ch, ref chlen, fl, ref fllen, jm, ref jmlen, mw, ref mwlen, ref unwrapthreats, ref unwrapsymbols)) return false;
 
-            chaff = Encoding.ASCII.GetString(ch, 0, chlen);
-            flare = Encoding.ASCII.GetString(fl, 0, fllen);
-            jmr = Encoding.ASCII.GetString(jm, 0, jmlen);
-            mws = Encoding.ASCII.GetString(mw, 0, mwlen);
+            chaff = Encoding.UTF8.GetString(ch, 0, chlen);
+            flare = Encoding.UTF8.GetString(fl, 0, fllen);
+            jmr = Encoding.UTF8.GetString(jm, 0, jmlen);
+            mws = Encoding.UTF8.GetString(mw, 0, mwlen);
 
             return true;
         }
@@ -183,14 +183,14 @@ namespace DCS
 
             if(!get_cmsp(u1, ref u1len, u2, ref u2len, u3, ref u3len, u4, ref u4len, d1, ref d1len, d2, ref d2len, d3, ref d3len, d4, ref d4len)) return false;
 
-            up1 = Encoding.ASCII.GetString(u1, 0, u1len);
-            up2 = Encoding.ASCII.GetString(u2, 0, u2len);
-            up3 = Encoding.ASCII.GetString(u3, 0, u3len);
-            up4 = Encoding.ASCII.GetString(u4, 0, u4len);
-            down1 = Encoding.ASCII.GetString(d1, 0, d1len);
-            down2 = Encoding.ASCII.GetString(d2, 0, d2len);
-            down3 = Encoding.ASCII.GetString(d3, 0, d3len);
-            down4 = Encoding.ASCII.GetString(d4, 0, d4len);
+            up1 = Encoding.UTF8.GetString(u1, 0, u1len);
+            up2 = Encoding.UTF8.GetString(u2, 0, u2len);
+            up3 = Encoding.UTF8.GetString(u3, 0, u3len);
+            up4 = Encoding.UTF8.GetString(u4, 0, u4len);
+            down1 = Encoding.UTF8.GetString(d1, 0, d1len);
+            down2 = Encoding.UTF8.GetString(d2, 0, d2len);
+            down3 = Encoding.UTF8.GetString(d3, 0, d3len);
+            down4 = Encoding.UTF8.GetString(d4, 0, d4len);
 
             return true;
         }
@@ -202,7 +202,7 @@ namespace DCS
 
             if(!get_uhf(ref channel, ref functiondial, ref modefrequency, freq, ref freqlen)) return false;
 
-            frequency = Encoding.ASCII.GetString(freq, 0, freqlen);
+            frequency = Encoding.UTF8.GetString(freq, 0, freqlen);
 
             return true;
         }
@@ -214,7 +214,7 @@ namespace DCS
 
             if(!get_tacan(ref modedial, freq, ref freqlen)) return false;
 
-            frequency = Encoding.ASCII.GetString(freq, 0, freqlen);
+            frequency = Encoding.UTF8.GetString(freq, 0, freqlen);
 
             return true;
         }
@@ -226,7 +226,7 @@ namespace DCS
 
             if(!get_ils(ref on, freq, ref freqlen)) return false;
 
-            frequency = Encoding.ASCII.GetString(freq, 0, freqlen);
+            frequency = Encoding.UTF8.GetString(freq, 0, freqlen);
 
             return true;
         }
@@ -238,7 +238,7 @@ namespace DCS
 
             if(!get_vhf_am(ref on, ref channel, ref modefrequency, ref selectfrequency, freq, ref freqlen)) return false;
 
-            frequency = Encoding.ASCII.GetString(freq, 0, freqlen);
+            frequency = Encoding.UTF8.GetString(freq, 0, freqlen);
 
             return true;
         }
@@ -250,7 +250,7 @@ namespace DCS
 
             if(!get_vhf_fm(ref on, ref channel, ref modefrequency, ref selectfrequency, freq, ref freqlen)) return false;
 
-            frequency = Encoding.ASCII.GetString(freq, 0, freqlen);
+            frequency = Encoding.UTF8.GetString(freq, 0, freqlen);
 
             return true;
         }
