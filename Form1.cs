@@ -66,9 +66,11 @@ namespace DCSExtractGui
                         m_Tracking = true;
                     }
 
+					//Disable unneeded modules to save time in scanning. Deafult scan, uv26, pvi and pui
+					//spu9, r800, r828
                     if (!DCSExtract.scan_ka50(true, true, true))
                     {
-                        lock(m_Lock)
+                        lock (m_Lock)
                         {
                             m_Ka50 = false;
                             m_Tracking = false;
@@ -86,6 +88,8 @@ namespace DCSExtractGui
                         m_Tracking = true;
                     }
 
+					//Disable unneeded modules to save time in scanning. Default scan cmsc, cmsp and uhf
+					//tacan, ils, vhf_am, vhf_fm
                     if (!DCSExtract.scan_a10c(true, true, true, true))
                     {
                         lock (m_Lock)
@@ -96,6 +100,10 @@ namespace DCSExtractGui
 
                         continue;
                     }
+                }
+                else
+                {
+                    continue;
                 }
 
                 lock(m_Lock)
@@ -115,6 +123,8 @@ namespace DCSExtractGui
             if(!DCSExtract.exist_dcs())
             {
                 this.Text = m_Text + ": Game not detected";
+                ClearKa50();
+                ClearA10c();
                 return;
             }
 
@@ -168,10 +178,15 @@ namespace DCSExtractGui
 
         private void ExtractKa50()
         {
+            //UV26
             string uv = "";
-            DCSExtract.ScanUV26(ref uv);
-            uv26.Text = uv;
 
+            if (DCSExtract.ScanUV26(ref uv))
+                uv26.Text = uv;
+            else
+                uv26.Text = "";
+
+            //EKRAN
             string queue = "";
             string memory = "";
             string failure = "";
@@ -179,81 +194,159 @@ namespace DCSExtractGui
             string line2 = "";
             string line3 = "";
             string line4 = "";
-            DCSExtract.ScanEkran(ref queue, ref memory, ref failure, ref line1, ref line2, ref line3, ref line4);
-            ekran_queue.Text = queue;
-            ekran_memory.Text = memory;
-            ekran_failure.Text = failure;
-            ekran_line1.Text = line1;
-            ekran_line2.Text = line2;
-            ekran_line3.Text = line3;
-            ekran_line4.Text = line4;
 
+            if (DCSExtract.ScanEkran(ref queue, ref memory, ref failure, ref line1, ref line2, ref line3, ref line4))
+            {
+                ekran_queue.Text = queue;
+                ekran_memory.Text = memory;
+                ekran_failure.Text = failure;
+                ekran_line1.Text = line1;
+                ekran_line2.Text = line2;
+                ekran_line3.Text = line3;
+                ekran_line4.Text = line4;
+            }
+            else
+            {
+                ekran_queue.Text = "";
+                ekran_memory.Text = "";
+                ekran_failure.Text = "";
+                ekran_line1.Text = "";
+                ekran_line2.Text = "";
+                ekran_line3.Text = "";
+                ekran_line4.Text = "";
+            }
+
+            //PVI
             int pviul = 0;
             string pviu = "";
             int pviur = 0;
             int pvidl = 0;
             string pvid = "";
             int pvidr = 0;
-            DCSExtract.ScanPVI(ref pviul, ref pviu, ref pviur, ref pvidl, ref pvid, ref pvidr);
-            pvi_sign_up.Text = pviul == 1 ? "-" : "";
-            pvi_up.Text = pviu;
-            pvi_up_right.Text = pviur == -1 ? "" : pviur.ToString();
-            pvi_sign_down.Text = pvidl == 1 ? "-" : "";
-            pvi_down.Text = pvid;
-            pvi_down_right.Text = pvidr == -1 ? "" : pvidr.ToString();
 
-            bool r828on = false;
-            int r828ch = 0;
-            DCSExtract.ScanR828(ref r828on, ref r828ch);
-            r828_on.Text = r828on ? "ON" : "OFF";
-            r828_channel.Text = r828ch.ToString();
-
-            bool spu9on = false;
-            int spu9ch = 0;
-            DCSExtract.ScanSpu9(ref spu9on, ref spu9ch);
-            spu9_on.Text = spu9on ? "ON" : "OFF";
-
-            switch(spu9ch)
+            if (DCSExtract.ScanPVI(ref pviul, ref pviu, ref pviur, ref pvidl, ref pvid, ref pvidr))
             {
-                case 0: spu9_channel.Text = "VHF2"; break;
-                case 1: spu9_channel.Text = "VHF1"; break;
-                case 2: spu9_channel.Text = "SW"; break;
-                case 3: spu9_channel.Text = "GND CREW"; break;
+                pvi_sign_up.Text = pviul == 1 ? "-" : "";
+                pvi_up.Text = pviu;
+                pvi_up_right.Text = pviur == -1 ? "" : pviur.ToString();
+                pvi_sign_down.Text = pvidl == 1 ? "-" : "";
+                pvi_down.Text = pvid;
+                pvi_down_right.Text = pvidr == -1 ? "" : pvidr.ToString();
+            }
+            else
+            {
+                pvi_sign_up.Text = "";
+                pvi_up.Text = "";
+                pvi_up_right.Text = "";
+                pvi_sign_down.Text = "";
+                pvi_down.Text = "";
+                pvi_down_right.Text = "";
             }
 
+            //R828
+            bool r828on = false;
+            int r828ch = 0;
+
+            if (DCSExtract.ScanR828(ref r828on, ref r828ch))
+            {
+                r828_on.Text = r828on ? "ON" : "OFF";
+                r828_channel.Text = r828ch.ToString();
+            }
+            else
+            {
+                r828_on.Text = "";
+                r828_channel.Text = "";
+            }
+
+            //SPU9
+            bool spu9on = false;
+            int spu9ch = 0;
+
+            if (DCSExtract.ScanSpu9(ref spu9on, ref spu9ch))
+            {
+                spu9_on.Text = spu9on ? "ON" : "OFF";
+
+                switch (spu9ch)
+                {
+                    case 0: spu9_channel.Text = "VHF2"; break;
+                    case 1: spu9_channel.Text = "VHF1"; break;
+                    case 2: spu9_channel.Text = "SW"; break;
+                    case 3: spu9_channel.Text = "GND CREW"; break;
+                }
+            }
+            else
+            {
+                spu9_on.Text = "";
+                spu9_channel.Text = "";
+            }
+
+            //R800
             bool r800on = false;
             bool r800am = false;
             string r800freq = "";
-            DCSExtract.ScanR800(ref r800on, ref r800am, ref r800freq);
-            r800_on.Text = r800on ? "ON" : "OFF";
-            r800_am.Text = r800am ? "AM" : "FM";
-            r800_frequency.Text = r800freq;
 
+            if (DCSExtract.ScanR800(ref r800on, ref r800am, ref r800freq))
+            {
+                r800_on.Text = r800on ? "ON" : "OFF";
+                r800_am.Text = r800am ? "AM" : "FM";
+                r800_frequency.Text = r800freq;
+            }
+            else
+            {
+                r800_on.Text = "";
+                r800_am.Text = "";
+                r800_frequency.Text = "";
+            }
+
+            //PUI
             string left = "";
             int middle = 0;
             int right = 0;
-            DCSExtract.ScanPui800(ref left, ref middle, ref right);
-            pui_left.Text = left;
-            pui_middle.Text = middle == -1 ? "" : middle.ToString();
-            pui_right.Text = right == -1 ? "" : right.ToString();
+
+            if (DCSExtract.ScanPui800(ref left, ref middle, ref right))
+            {
+                pui_left.Text = left;
+                pui_middle.Text = middle == -1 ? "" : middle.ToString();
+                pui_right.Text = right == -1 ? "" : right.ToString();
+            }
+            else
+            {
+                pui_left.Text = "";
+                pui_middle.Text = "";
+                pui_right.Text = "";
+            }
         }
 
         private void ExtractA10c()
         {
+            //CMSC
             string chaff = "";
             string flare = "";
             string jmr = "";
             string mws = "";
             bool uwt = false;
             bool uws = false;
-            DCSExtract.ScanCMSC(ref chaff, ref flare, ref jmr, ref mws, ref uwt, ref uws);
-            cmsc_chaff.Text = chaff;
-            cmsc_flare.Text = flare;
-            cmsc_jammer.Text = jmr;
-            cmsc_mws.Text = mws;
-            cmsc_uwthreats.Text = uwt ? "ON" : "OFF";
-            cmsc_uwsymbols.Text = uws ? "ON" : "OFF";
 
+            if (DCSExtract.ScanCMSC(ref chaff, ref flare, ref jmr, ref mws, ref uwt, ref uws))
+            {
+                cmsc_chaff.Text = chaff;
+                cmsc_flare.Text = flare;
+                cmsc_jammer.Text = jmr;
+                cmsc_mws.Text = mws;
+                cmsc_uwthreats.Text = uwt ? "ON" : "OFF";
+                cmsc_uwsymbols.Text = uws ? "ON" : "OFF";
+            }
+            else
+            {
+                cmsc_chaff.Text = "";
+                cmsc_flare.Text = "";
+                cmsc_jammer.Text = "";
+                cmsc_mws.Text = "";
+                cmsc_uwthreats.Text = "";
+                cmsc_uwsymbols.Text = "";
+            }
+
+            //CMSP
             string u1 = "";
             string u2 = "";
             string u3 = "";
@@ -262,107 +355,174 @@ namespace DCSExtractGui
             string d2 = "";
             string d3 = "";
             string d4 = "";
-            DCSExtract.ScanCMSP(ref u1, ref u2, ref u3, ref u4, ref d1, ref d2, ref d3, ref d4);
-            cmsp_up1.Text = u1;
-            cmsp_up2.Text = u2;
-            cmsp_up3.Text = u3;
-            cmsp_up4.Text = u4;
-            cmsp_down1.Text = d1;
-            cmsp_down2.Text = d2;
-            cmsp_down3.Text = d3;
-            cmsp_down4.Text = d4;
 
-            int modedial = 0;
-            string tcfreq = "";
-            DCSExtract.ScanTacan(ref modedial, ref tcfreq);
-            tacan_frequency.Text = tcfreq;
-
-            switch(modedial)
+            if (DCSExtract.ScanCMSP(ref u1, ref u2, ref u3, ref u4, ref d1, ref d2, ref d3, ref d4))
             {
-                case 0: tacan_modedial.Text = "OFF"; break;
-                case 1: tacan_modedial.Text = "REC"; break;
-                case 2: tacan_modedial.Text = "T/R"; break;
-                case 3: tacan_modedial.Text = "A/A REC"; break;
-                case 4: tacan_modedial.Text = "A/A T/R"; break;
+                cmsp_up1.Text = u1;
+                cmsp_up2.Text = u2;
+                cmsp_up3.Text = u3;
+                cmsp_up4.Text = u4;
+                cmsp_down1.Text = d1;
+                cmsp_down2.Text = d2;
+                cmsp_down3.Text = d3;
+                cmsp_down4.Text = d4;
+            }
+            else
+            {
+                cmsp_up1.Text = "";
+                cmsp_up2.Text = "";
+                cmsp_up3.Text = "";
+                cmsp_up4.Text = "";
+                cmsp_down1.Text = "";
+                cmsp_down2.Text = "";
+                cmsp_down3.Text = "";
+                cmsp_down4.Text = "";
             }
 
+            //TACAN
+            int modedial = 0;
+            string tcfreq = "";
+
+            if (DCSExtract.ScanTacan(ref modedial, ref tcfreq))
+            {
+                tacan_frequency.Text = tcfreq;
+
+                switch (modedial)
+                {
+                    case 0: tacan_modedial.Text = "OFF"; break;
+                    case 1: tacan_modedial.Text = "REC"; break;
+                    case 2: tacan_modedial.Text = "T/R"; break;
+                    case 3: tacan_modedial.Text = "A/A REC"; break;
+                    case 4: tacan_modedial.Text = "A/A T/R"; break;
+                }
+            }
+            else
+            {
+                tacan_frequency.Text = "";
+                tacan_modedial.Text = "";
+            }
+
+            //ILS
             bool ilson = false;
             string ilsfreq = "";
-            DCSExtract.ScanILS(ref ilson, ref ilsfreq);
-            ils_on.Text = ilson ? "ON" : "OFF";
-            ils_frequency.Text = ilsfreq;
 
+            if (DCSExtract.ScanILS(ref ilson, ref ilsfreq))
+            {
+                ils_on.Text = ilson ? "ON" : "OFF";
+                ils_frequency.Text = ilsfreq;
+            }
+            else
+            {
+                ils_on.Text = "";
+                ils_frequency.Text = "";
+            }
+
+            //UHF
             int uhfchan = 0;
             int uhfdial = 0;
             int uhfmode = 0;
             string uhfreq = "";
-            DCSExtract.ScanUHF(ref uhfchan, ref uhfdial, ref uhfmode, ref uhfreq);
-            uhf_frequency.Text = uhfreq;
-            uhf_channel.Text = uhfchan.ToString();
 
-            switch(uhfdial)
+            if (DCSExtract.ScanUHF(ref uhfchan, ref uhfdial, ref uhfmode, ref uhfreq))
             {
-                case 0: uhf_functiondial.Text = "OFF"; break;
-                case 1: uhf_functiondial.Text = "MAIN"; break;
-                case 2: uhf_functiondial.Text = "BOTH"; break;
-                case 3: uhf_functiondial.Text = "ADF"; break;
+                uhf_frequency.Text = uhfreq;
+                uhf_channel.Text = uhfchan.ToString();
+
+                switch (uhfdial)
+                {
+                    case 0: uhf_functiondial.Text = "OFF"; break;
+                    case 1: uhf_functiondial.Text = "MAIN"; break;
+                    case 2: uhf_functiondial.Text = "BOTH"; break;
+                    case 3: uhf_functiondial.Text = "ADF"; break;
+                }
+
+                switch (uhfmode)
+                {
+                    case 0: uhf_modefrequency.Text = "MNL"; break;
+                    case 1: uhf_modefrequency.Text = "PRESET"; break;
+                    case 2: uhf_modefrequency.Text = "GRD"; break;
+                }
+            }
+            else
+            {
+                uhf_frequency.Text = "";
+                uhf_channel.Text = "";
+                uhf_functiondial.Text = "";
+                uhf_modefrequency.Text = "";
             }
 
-            switch(uhfmode)
-            {
-                case 0: uhf_modefrequency.Text = "MNL"; break;
-                case 1: uhf_modefrequency.Text = "PRESET"; break;
-                case 2: uhf_modefrequency.Text = "GRD"; break;
-            }
-
+            //VHF AM
             bool vamon = false;
             int vamchan = 0;
             int vammode = 0;
             int vamselect = 0;
             string vamfreq = "";
-            DCSExtract.ScanVHF_AM(ref vamon, ref vamchan, ref vammode, ref vamselect, ref vamfreq);
-            vhf_am_on.Text = vamon ? "ON" : "OFF";
-            vhf_am_channel.Text = vamchan.ToString();
-            vhf_am_frequency.Text = vamfreq;
 
-            switch(vammode)
+            if (DCSExtract.ScanVHF_AM(ref vamon, ref vamchan, ref vammode, ref vamselect, ref vamfreq))
             {
-                case 0: vhf_am_modefrequency.Text = "OFF"; break;
-                case 1: vhf_am_modefrequency.Text = "TK"; break;
-                case 2: vhf_am_modefrequency.Text = "DN"; break;
+                vhf_am_on.Text = vamon ? "ON" : "OFF";
+                vhf_am_channel.Text = vamchan.ToString();
+                vhf_am_frequency.Text = vamfreq;
+
+                switch (vammode)
+                {
+                    case 0: vhf_am_modefrequency.Text = "OFF"; break;
+                    case 1: vhf_am_modefrequency.Text = "TK"; break;
+                    case 2: vhf_am_modefrequency.Text = "DN"; break;
+                }
+
+                switch (vamselect)
+                {
+                    case 0: vhf_am_selectfrequency.Text = "FM"; break;
+                    case 1: vhf_am_selectfrequency.Text = "AM"; break;
+                    case 2: vhf_am_selectfrequency.Text = "MAN"; break;
+                    case 3: vhf_am_selectfrequency.Text = "PRE"; break;
+                }
+            }
+            else
+            {
+                vhf_am_on.Text = "";
+                vhf_am_channel.Text = "";
+                vhf_am_frequency.Text = "";
+                vhf_am_modefrequency.Text = "";
+                vhf_am_selectfrequency.Text = "";
             }
 
-            switch (vamselect)
-            {
-                case 0: vhf_am_selectfrequency.Text = "FM"; break;
-                case 1: vhf_am_selectfrequency.Text = "AM"; break;
-                case 2: vhf_am_selectfrequency.Text = "MAN"; break;
-                case 3: vhf_am_selectfrequency.Text = "PRE"; break;
-            }
-
+            //VHF FM
             bool vfmon = false;
             int vfmchan = 0;
             int vfmmode = 0;
             int vfmselect = 0;
             string vfmfreq = "";
-            DCSExtract.ScanVHF_FM(ref vfmon, ref vfmchan, ref vfmmode, ref vfmselect, ref vfmfreq);
-            vhf_fm_on.Text = vfmon ? "ON" : "OFF";
-            vhf_fm_channel.Text = vfmchan.ToString();
-            vhf_fm_frequency.Text = vfmfreq;
 
-            switch (vfmmode)
+            if (DCSExtract.ScanVHF_FM(ref vfmon, ref vfmchan, ref vfmmode, ref vfmselect, ref vfmfreq))
             {
-                case 0: vhf_fm_modefrequency.Text = "OFF"; break;
-                case 1: vhf_fm_modefrequency.Text = "TK"; break;
-                case 2: vhf_fm_modefrequency.Text = "DN"; break;
+                vhf_fm_on.Text = vfmon ? "ON" : "OFF";
+                vhf_fm_channel.Text = vfmchan.ToString();
+                vhf_fm_frequency.Text = vfmfreq;
+
+                switch (vfmmode)
+                {
+                    case 0: vhf_fm_modefrequency.Text = "OFF"; break;
+                    case 1: vhf_fm_modefrequency.Text = "TK"; break;
+                    case 2: vhf_fm_modefrequency.Text = "DN"; break;
+                }
+
+                switch (vfmselect)
+                {
+                    case 0: vhf_fm_selectfrequency.Text = "FM"; break;
+                    case 1: vhf_fm_selectfrequency.Text = "AM"; break;
+                    case 2: vhf_fm_selectfrequency.Text = "MAN"; break;
+                    case 3: vhf_fm_selectfrequency.Text = "PRE"; break;
+                }
             }
-
-            switch (vfmselect)
+            else
             {
-                case 0: vhf_fm_selectfrequency.Text = "FM"; break;
-                case 1: vhf_fm_selectfrequency.Text = "AM"; break;
-                case 2: vhf_fm_selectfrequency.Text = "MAN"; break;
-                case 3: vhf_fm_selectfrequency.Text = "PRE"; break;
+                vhf_fm_on.Text = "";
+                vhf_fm_channel.Text = "";
+                vhf_fm_frequency.Text = "";
+                vhf_fm_modefrequency.Text = "";
+                vhf_fm_selectfrequency.Text = "";
             }
         }
 
