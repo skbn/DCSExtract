@@ -141,7 +141,7 @@ namespace DCSExtractGui
 
             if (ka50)
             {
-                if (!m_Tracking)
+                if (!track)
                 {
                     this.Text = m_Text + ": Ka50 detected";
                     ExtractKa50();
@@ -159,7 +159,7 @@ namespace DCSExtractGui
 
             if (a10c)
             {
-                if (!m_Tracking)
+                if (!track)
                 {
                     this.Text = m_Text + ": A10c detected";
                     ExtractA10c();
