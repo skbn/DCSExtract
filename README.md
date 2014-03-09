@@ -9,4 +9,5 @@ Comming soon for UH-1H
 
 
 KA50: UV26, PVI, PUI, SPU9, R800 and R828
+
 A10C: CMSC, CMSP, TACAN, ILS, UHF, VHF AM, VHF FM
