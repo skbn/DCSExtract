@@ -34,7 +34,7 @@ namespace DCS
 
         public static void Info(ref string inf)
         {
-            byte[] data = new byte[128];
+            byte[] data = new byte[256];
             int len = 0;
 
             info(data, ref len);
@@ -45,7 +45,7 @@ namespace DCS
         //KA50
         public static bool ScanUV26(ref string data)
         {
-            byte[] uv = new byte[16];
+            byte[] uv = new byte[256];
             int len = 0;
 
             if(!get_uv26(uv, ref len)) return false;
@@ -57,9 +57,9 @@ namespace DCS
 
         public static bool ScanPVI(ref int upleft, ref string up, ref int upright, ref int downleft, ref string down, ref int downright)
         {
-            byte[] sup = new byte[16];
+            byte[] sup = new byte[256];
             int ulen = 0;
-            byte[] sdown = new byte[16];
+            byte[] sdown = new byte[256];
             int dlen = 0;
 
             if(!get_pvi(ref upleft, sup, ref ulen, ref upright, ref downleft, sdown, ref dlen, ref downright)) return false;
@@ -72,7 +72,7 @@ namespace DCS
 
         public static bool ScanPui800(ref string left, ref int middle, ref int right)
         {
-            byte[] sleft = new byte[16];
+            byte[] sleft = new byte[256];
             int len = 0;
 
             if(!get_pui800(sleft, ref len, ref middle, ref right)) return false;
