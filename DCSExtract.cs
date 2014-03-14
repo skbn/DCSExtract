@@ -141,10 +141,12 @@ namespace DCS
         }
 
         //A10C
-        public static bool ScanCMSC(ref string chaff, ref string flare, ref string jmr, ref string mws, ref bool unwrapthreats, ref bool unwrapsymbols)
+        public static bool ScanCMSC(ref string chaff, ref string separator, ref string flare, ref string jmr, ref string mws, ref bool unwrapthreats, ref bool unwrapsymbols)
         {
             byte[] ch = new byte[256];
             int chlen = 0;
+            byte[] sep = new byte[256];
+            int seplen = 0;
             byte[] fl = new byte[256];
             int fllen = 0;
             byte[] jm = new byte[256];
@@ -152,9 +154,10 @@ namespace DCS
             byte[] mw = new byte[256];
             int mwlen = 0;
 
-            if(!get_cmsc(ch, ref chlen, fl, ref fllen, jm, ref jmlen, mw, ref mwlen, ref unwrapthreats, ref unwrapsymbols)) return false;
+            if(!get_cmsc(ch, ref chlen, sep, ref seplen, fl, ref fllen, jm, ref jmlen, mw, ref mwlen, ref unwrapthreats, ref unwrapsymbols)) return false;
 
             chaff = Encoding.UTF8.GetString(ch, 0, chlen);
+            separator = Encoding.UTF8.GetString(sep, 0, seplen);
             flare = Encoding.UTF8.GetString(fl, 0, fllen);
             jmr = Encoding.UTF8.GetString(jm, 0, jmlen);
             mws = Encoding.UTF8.GetString(mw, 0, mwlen);
@@ -282,7 +285,7 @@ namespace DCS
 
         //A10C
         [DllImport("DcsExport64.dll")]
-        private static extern bool get_cmsc([Out] byte[] chaff, ref int chaff_length, [Out] byte[] flare, ref int flare_length, [Out] byte[] jmr, ref int jmr_length, [Out] byte[] mws, ref int mws_length, ref bool unwrapthreats, ref bool unwrapsymbols);
+        private static extern bool get_cmsc([Out] byte[] chaff, ref int chaff_length, [Out] byte[] separator, ref int separator_length, [Out] byte[] flare, ref int flare_length, [Out] byte[] jmr, ref int jmr_length, [Out] byte[] mws, ref int mws_length, ref bool unwrapthreats, ref bool unwrapsymbols);
 
         [DllImport("DcsExport64.dll")]
         private static extern bool get_cmsp([Out] byte[] up1, ref int up1_length, [Out] byte[] up2, ref int up2_length, [Out] byte[] up3, ref int up3_length, [Out] byte[] up4, ref int up4_length, [Out] byte[] down1, ref int down1_length, [Out] byte[] down2, ref int down2_length, [Out] byte[] down3, ref int down3_length, [Out] byte[] down4, ref int down4_length);

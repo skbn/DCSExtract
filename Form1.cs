@@ -321,15 +321,17 @@ namespace DCSExtractGui
         {
             //CMSC
             string chaff = "";
+            string separator = "";
             string flare = "";
             string jmr = "";
             string mws = "";
             bool uwt = false;
             bool uws = false;
 
-            if (DCSExtract.ScanCMSC(ref chaff, ref flare, ref jmr, ref mws, ref uwt, ref uws))
+            if (DCSExtract.ScanCMSC(ref chaff, ref separator, ref flare, ref jmr, ref mws, ref uwt, ref uws))
             {
                 cmsc_chaff.Text = chaff;
+                cmsc_separator.Text = separator;
                 cmsc_flare.Text = flare;
                 cmsc_jammer.Text = jmr;
                 cmsc_mws.Text = mws;
@@ -339,6 +341,7 @@ namespace DCSExtractGui
             else
             {
                 cmsc_chaff.Text = "";
+                cmsc_separator.Text = "";
                 cmsc_flare.Text = "";
                 cmsc_jammer.Text = "";
                 cmsc_mws.Text = "";
@@ -558,6 +561,7 @@ namespace DCSExtractGui
         {
             cmsc_jammer.Text = "";
             cmsc_chaff.Text = "";
+            cmsc_separator.Text = "";
             cmsc_flare.Text = "";
             cmsc_mws.Text = "";
             cmsc_uwthreats.Text = "";
